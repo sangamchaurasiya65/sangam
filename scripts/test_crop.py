@@ -3,9 +3,14 @@ import numpy as np
 from PIL import Image, ImageOps, ImageFilter, ImageEnhance
 import scipy.ndimage as ndimage
 
-input_path = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\a0aeb4e4-916c-4cca-8bd4-9c7b92d79891\.user_uploaded\media_1789388954199.jpg"
-os.makedirs("assets", exist_ok=True)
-os.makedirs("scripts", exist_ok=True)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+PRIMARY_PHOTO = os.path.join(REPO_ROOT, "assets", "portrait_original.jpg")
+BRAIN_PHOTO = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\a0aeb4e4-916c-4cca-8bd4-9c7b92d79891\.user_uploaded\media_1789388954199.jpg"
+input_path = PRIMARY_PHOTO if os.path.exists(PRIMARY_PHOTO) else BRAIN_PHOTO
+
+os.makedirs(os.path.join(REPO_ROOT, "assets"), exist_ok=True)
+os.makedirs(os.path.join(REPO_ROOT, "scripts"), exist_ok=True)
 
 img = Image.open(input_path).convert("RGB")
 print(f"Original image size: {img.size}")
@@ -25,10 +30,10 @@ else:
     crop_box = (0, 0, w, crop_h)
 
 cropped = img.crop(crop_box)
-cropped.save("assets/cropped_ref.jpg", quality=95)
+cropped.save(os.path.join(REPO_ROOT, "assets", "cropped_ref.jpg"), quality=95)
 print(f"Cropped size: {cropped.size}")
 
 # Resize to target grid 300x340
 grid_img = cropped.resize((300, 340), Image.Resampling.LANCZOS)
-grid_img.save("assets/grid_300x340.png")
+grid_img.save(os.path.join(REPO_ROOT, "assets", "grid_300x340.png"))
 print("Grid image saved.")

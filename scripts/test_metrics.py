@@ -4,8 +4,11 @@ from PIL import Image, ImageOps, ImageFilter, ImageEnhance, ImageDraw
 import scipy.ndimage as ndimage
 import scipy.optimize
 
-WORKSPACE_DIR = r"c:\Users\LENOVO\OneDrive\Desktop\sangam"
-INPUT_PHOTO = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\a0aeb4e4-916c-4cca-8bd4-9c7b92d79891\.user_uploaded\media_1789388954199.jpg"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+WORKSPACE_DIR = os.path.dirname(SCRIPT_DIR)
+PRIMARY_PHOTO = os.path.join(WORKSPACE_DIR, "assets", "portrait_original.jpg")
+BRAIN_PHOTO = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\a0aeb4e4-916c-4cca-8bd4-9c7b92d79891\.user_uploaded\media_1789388954199.jpg"
+INPUT_PHOTO = PRIMARY_PHOTO if os.path.exists(PRIMARY_PHOTO) else BRAIN_PHOTO
 
 np.random.seed(42)
 

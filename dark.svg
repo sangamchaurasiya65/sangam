@@ -3934,7 +3934,7 @@
           <g id="row-1" class="row-text mono">
             <text x="483" y="168.5" fill="#F472B6" font-weight="600" textLength="31" lengthAdjust="spacingAndGlyphs">Role</text>
             <text x="524" y="168.5" fill="#334155" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · · ·</text>
-            <text x="1122" y="168.5" fill="#F1F5F9" text-anchor="end" font-weight="500" textLength="241" lengthAdjust="spacingAndGlyphs">Full-Stack & Software Developer</text>
+            <text x="1122" y="168.5" fill="#F1F5F9" text-anchor="end" font-weight="500" textLength="241" lengthAdjust="spacingAndGlyphs">Full-Stack &amp; Software Developer</text>
           </g>
         
           <g id="row-2" class="row-text mono">

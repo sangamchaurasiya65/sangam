@@ -3,7 +3,12 @@ import numpy as np
 from PIL import Image, ImageOps, ImageFilter, ImageEnhance
 import scipy.ndimage as ndimage
 
-input_path = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\a0aeb4e4-916c-4cca-8bd4-9c7b92d79891\.user_uploaded\media_1789388954199.jpg"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+PRIMARY_PHOTO = os.path.join(REPO_ROOT, "assets", "portrait_original.jpg")
+BRAIN_PHOTO = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\a0aeb4e4-916c-4cca-8bd4-9c7b92d79891\.user_uploaded\media_1789388954199.jpg"
+input_path = PRIMARY_PHOTO if os.path.exists(PRIMARY_PHOTO) else BRAIN_PHOTO
+
 img = Image.open(input_path).convert("RGB")
 w, h = img.size
 target_aspect = 300.0 / 340.0
@@ -17,7 +22,7 @@ enhancer = ImageEnhance.Contrast(cropped)
 c_img = enhancer.enhance(1.3)
 c_img = ImageOps.autocontrast(c_img, cutoff=1)
 c_img = c_img.filter(ImageFilter.UnsharpMask(radius=3, percent=140))
-c_img.save("assets/enhanced_300x340.png")
+c_img.save(os.path.join(REPO_ROOT, "assets", "enhanced_300x340.png"))
 
 # Convert to grayscale / array
 gray = np.array(c_img.convert("L"), dtype=np.float32)
@@ -60,7 +65,7 @@ if num > 0:
 fg_mask = ndimage.binary_dilation(fg_mask, structure=np.ones((3, 3)))
 fg_mask = ndimage.binary_fill_holes(fg_mask)
 
-Image.fromarray((fg_mask * 255).astype(np.uint8)).save("assets/fg_mask.png")
+Image.fromarray((fg_mask * 255).astype(np.uint8)).save(os.path.join(REPO_ROOT, "assets", "fg_mask.png"))
 
 # Floyd-Steinberg Dithering with Serpentine order
 def floyd_steinberg(img_array, mask=None, invert=False):
@@ -94,10 +99,6 @@ def floyd_steinberg(img_array, mask=None, invert=False):
             err = old_val - new_val
             
             # Distribute error
-            # (y, x + dir): 7/16
-            # (y + 1, x - dir): 3/16
-            # (y + 1, x): 5/16
-            # (y + 1, x + dir): 1/16
             if 0 <= x + direction < w:
                 if mask is None or mask[y, x + direction]:
                     arr[y, x + direction] += err * (7.0 / 16.0)
@@ -115,12 +116,11 @@ def floyd_steinberg(img_array, mask=None, invert=False):
 
 # Dark mode: dots draw the lit subject on dark panel
 # For dark mode, lighter parts of the subject get dots.
-# Let's adjust brightness/gamma of subject so face features, eyes, hair, clothes are beautifully articulated.
 dark_dither = floyd_steinberg(gray, mask=fg_mask, invert=False)
-Image.fromarray((dark_dither * 255).astype(np.uint8)).save("assets/dark_dither.png")
+Image.fromarray((dark_dither * 255).astype(np.uint8)).save(os.path.join(REPO_ROOT, "assets", "dark_dither.png"))
 print(f"Dark mode dots count: {np.sum(dark_dither)}")
 
 # Light mode: keep background; dots draw the dark parts (invert=True so darker regions become high intensity)
 light_dither = floyd_steinberg(gray, mask=None, invert=True)
-Image.fromarray((light_dither * 255).astype(np.uint8)).save("assets/light_dither.png")
+Image.fromarray((light_dither * 255).astype(np.uint8)).save(os.path.join(REPO_ROOT, "assets", "light_dither.png"))
 print(f"Light mode dots count: {np.sum(light_dither)}")

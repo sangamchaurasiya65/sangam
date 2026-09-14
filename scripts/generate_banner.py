@@ -1,5 +1,7 @@
 import os
 import sys
+import html
+import xml.etree.ElementTree as ET
 import numpy as np
 from PIL import Image, ImageOps, ImageFilter, ImageEnhance, ImageDraw
 import scipy.ndimage as ndimage
@@ -7,8 +9,12 @@ import scipy.optimize
 
 np.random.seed(42)
 
-WORKSPACE_DIR = r"c:\Users\LENOVO\OneDrive\Desktop\sangam"
-INPUT_PHOTO = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\a0aeb4e4-916c-4cca-8bd4-9c7b92d79891\.user_uploaded\media_1789388954199.jpg"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+WORKSPACE_DIR = os.path.dirname(SCRIPT_DIR)
+PRIMARY_PHOTO = os.path.join(WORKSPACE_DIR, "assets", "portrait_original.jpg")
+BRAIN_PHOTO = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\a0aeb4e4-916c-4cca-8bd4-9c7b92d79891\.user_uploaded\media_1789388954199.jpg"
+INPUT_PHOTO = PRIMARY_PHOTO if os.path.exists(PRIMARY_PHOTO) else BRAIN_PHOTO
+
 OUTPUT_DIR = os.path.join(WORKSPACE_DIR, "assets")
 DATA_DIR = os.path.join(WORKSPACE_DIR, "data")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -444,16 +450,28 @@ def build_banner_svg(theme="dark"):
         n_dots = max(3, int(avail_px / 10.0))
         dots_str = " ·" * (n_dots // 2)
         
+        lbl_esc = html.escape(disp_label)
+        val_esc = html.escape(val)
+        dots_esc = html.escape(dots_str)
+        
         svg.append(f'''
           <g id="row-{i}" class="row-text mono">
-            <text x="{table_left}" y="{ry}" fill="{lbl_color}" font-weight="600" textLength="{lbl_width_px}" lengthAdjust="spacingAndGlyphs">{disp_label}</text>
-            <text x="{leader_start_x}" y="{ry}" fill="{dot_leader_color}" font-weight="400" letter-spacing="2">{dots_str}</text>
-            <text x="{table_right}" y="{ry}" fill="{val_color}" text-anchor="end" font-weight="500" textLength="{val_width_px}" lengthAdjust="spacingAndGlyphs">{val}</text>
+            <text x="{table_left}" y="{ry}" fill="{lbl_color}" font-weight="600" textLength="{lbl_width_px}" lengthAdjust="spacingAndGlyphs">{lbl_esc}</text>
+            <text x="{leader_start_x}" y="{ry}" fill="{dot_leader_color}" font-weight="400" letter-spacing="2">{dots_esc}</text>
+            <text x="{table_right}" y="{ry}" fill="{val_color}" text-anchor="end" font-weight="500" textLength="{val_width_px}" lengthAdjust="spacingAndGlyphs">{val_esc}</text>
           </g>
         ''')
         
     svg.append('</svg>')
-    return "".join(svg)
+    full_svg = "".join(svg)
+    
+    # Assert XML validity
+    try:
+        ET.fromstring(full_svg)
+    except ET.ParseError as e:
+        raise ValueError(f"Generated SVG has invalid XML syntax: {e}")
+        
+    return full_svg
 
 # Output
 dark_svg_content = build_banner_svg("dark")
@@ -468,6 +486,10 @@ with open(light_path, "w", encoding="utf-8") as f:
     f.write(light_svg_content)
 light_kb = os.path.getsize(light_path) / 1024.0
 
+# Verify saved files directly
+ET.parse(dark_path)
+ET.parse(light_path)
+
 print(f"\n=======================================================")
 print(f"BANNER GENERATION METRICS REPORT:")
 print(f"- dark.svg payload:            {dark_kb:.1f} KB (Target ~900KB - 1MB)")
@@ -476,4 +498,5 @@ print(f"- Intro Evenness Metric:       {evenness_metric:.4f} (<= 0.05 PASS)")
 print(f"- Straight Boundary Metric:    {straight_boundary_metric:.4f} (<= 0.01 PASS)")
 print(f"- Portrait Dots:               {n_dark_dots} dots")
 print(f"- Traveller Morph Dots:        {N_TRAVELLERS} dots")
+print(f"- XML Validation:              PASSED (dark.svg & light.svg 100% valid)")
 print(f"=======================================================\n")

@@ -1,8 +1,14 @@
+import os
 import numpy as np
 from PIL import Image, ImageEnhance, ImageOps, ImageFilter
 import scipy.ndimage as ndimage
 
-input_path = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\a0aeb4e4-916c-4cca-8bd4-9c7b92d79891\.user_uploaded\media_1789388954199.jpg"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+PRIMARY_PHOTO = os.path.join(REPO_ROOT, "assets", "portrait_original.jpg")
+BRAIN_PHOTO = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\a0aeb4e4-916c-4cca-8bd4-9c7b92d79891\.user_uploaded\media_1789388954199.jpg"
+input_path = PRIMARY_PHOTO if os.path.exists(PRIMARY_PHOTO) else BRAIN_PHOTO
+
 img = Image.open(input_path).convert("RGB")
 w, h = img.size
 target_aspect = 300.0 / 340.0
@@ -48,5 +54,6 @@ if num > 0:
 fg_mask = ndimage.binary_fill_holes(fg_mask)
 
 # Save mask
-Image.fromarray((fg_mask * 255).astype(np.uint8)).save("assets/refined_fg_mask.png")
+output_mask_path = os.path.join(REPO_ROOT, "assets", "refined_fg_mask.png")
+Image.fromarray((fg_mask * 255).astype(np.uint8)).save(output_mask_path)
 print(f"Foreground mask pixels: {np.sum(fg_mask)} / {300*340} ({np.sum(fg_mask)/(300*340)*100:.1f}%)")

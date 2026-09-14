@@ -1,7 +1,12 @@
+import os
 import numpy as np
 
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+DATA_PATH = os.path.join(REPO_ROOT, "data", "dark_dots.npy")
+
 # Load dark dots
-dark_dots = np.load("data/dark_dots.npy")
+dark_dots = np.load(DATA_PATH)
 dark_ys, dark_xs = np.where(dark_dots > 0)
 n_dots = len(dark_xs)
 N_INTRO_GROUPS = 60
