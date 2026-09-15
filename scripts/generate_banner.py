@@ -11,53 +11,56 @@ np.random.seed(42)
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 WORKSPACE_DIR = os.path.dirname(SCRIPT_DIR)
+TRANSPARENT_PHOTO = os.path.join(WORKSPACE_DIR, "assets", "portrait_transparent.png")
 PRIMARY_PHOTO = os.path.join(WORKSPACE_DIR, "assets", "portrait_original.jpg")
-BRAIN_PHOTO = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\a0aeb4e4-916c-4cca-8bd4-9c7b92d79891\.user_uploaded\media_1789388954199.jpg"
-INPUT_PHOTO = PRIMARY_PHOTO if os.path.exists(PRIMARY_PHOTO) else BRAIN_PHOTO
+BRAIN_PHOTO = r"C:\Users\LENOVO\.gemini\antigravity-ide\brain\ebdc3820-7803-4e00-819b-dc7ed7b49cf8\.user_uploaded\media_1789483751073.png"
+if os.path.exists(TRANSPARENT_PHOTO):
+    INPUT_PHOTO = TRANSPARENT_PHOTO
+elif os.path.exists(BRAIN_PHOTO):
+    INPUT_PHOTO = BRAIN_PHOTO
+else:
+    INPUT_PHOTO = PRIMARY_PHOTO
 
 OUTPUT_DIR = os.path.join(WORKSPACE_DIR, "assets")
-DATA_DIR = os.path.join(WORKSPACE_DIR, "data")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-os.makedirs(DATA_DIR, exist_ok=True)
 
 # 1. Cropping & Pre-processing
-img = Image.open(INPUT_PHOTO).convert("RGB")
-w, h = img.size
+raw_img = Image.open(INPUT_PHOTO)
+w, h = raw_img.size
 target_aspect = 300.0 / 340.0
 crop_h = int(w / target_aspect)
-cropped = img.crop((0, 0, w, min(crop_h, h))).resize((300, 340), Image.Resampling.LANCZOS)
+cropped = raw_img.crop((0, 0, w, min(crop_h, h))).resize((300, 340), Image.Resampling.LANCZOS)
 
-enhancer = ImageEnhance.Contrast(cropped)
+# Extract foreground mask directly from alpha if transparent
+if cropped.mode == "RGBA":
+    alpha_channel = np.array(cropped)[:, :, 3]
+    fg_mask = (alpha_channel > 32)
+    fg_mask = ndimage.binary_fill_holes(fg_mask)
+else:
+    rgb_arr = np.array(cropped.convert("RGB"), dtype=np.float32)
+    ys_grid, xs_grid = np.indices((340, 300))
+    left_boundary = np.where(ys_grid < 140, 85.0, 85.0 - (ys_grid - 140.0) * (70.0 / 200.0))
+    right_boundary = np.where(ys_grid < 140, 215.0, 215.0 + (ys_grid - 140.0) * (70.0 / 200.0))
+    outside_envelope = (ys_grid < 20) | (xs_grid < left_boundary) | (xs_grid > right_boundary)
+    is_sofa = ((xs_grid < 100) | (xs_grid > 200)) & (ys_grid < 190) & (rgb_arr[:, :, 0] > 70) & (rgb_arr[:, :, 0] > 1.5 * rgb_arr[:, :, 1]) & (rgb_arr[:, :, 0] > 1.4 * rgb_arr[:, :, 2])
+    bg_mask = outside_envelope | is_sofa
+    fg_mask = ~bg_mask
+    fg_mask = ndimage.binary_opening(fg_mask, structure=np.ones((3, 3)))
+    fg_mask = ndimage.binary_closing(fg_mask, structure=np.ones((7, 7)))
+    fg_mask = ndimage.binary_fill_holes(fg_mask)
+    lbl, num = ndimage.label(fg_mask)
+    if num > 0:
+        counts = np.bincount(lbl.flat)[1:]
+        fg_mask = (lbl == counts.argmax() + 1)
+    fg_mask = ndimage.binary_fill_holes(fg_mask)
+
+enhancer = ImageEnhance.Contrast(cropped.convert("RGB"))
 c_img = enhancer.enhance(1.3)
 c_img = ImageOps.autocontrast(c_img, cutoff=1)
 c_img = c_img.filter(ImageFilter.UnsharpMask(radius=3, percent=140))
 c_img.save(os.path.join(OUTPUT_DIR, "portrait_preprocessed.png"))
 
 gray_arr = np.array(c_img.convert("L"), dtype=np.float32)
-rgb_arr = np.array(c_img, dtype=np.float32)
-
-# 2. Dark Mode Background Segmentation
-is_red_sofa = (rgb_arr[:, :, 0] > 92) & (rgb_arr[:, :, 0] > rgb_arr[:, :, 1] + 18) & (rgb_arr[:, :, 0] > rgb_arr[:, :, 2] + 18)
-is_top_marble = np.zeros((340, 300), dtype=bool)
-for y in range(120):
-    for x in range(300):
-        if x < 65 or x > 235 or y < 28:
-            is_top_marble[y, x] = True
-
-bg_mask = is_red_sofa | is_top_marble
-fg_mask = ~bg_mask
-fg_mask = ndimage.binary_opening(fg_mask, structure=np.ones((3, 3)))
-fg_mask = ndimage.binary_closing(fg_mask, structure=np.ones((9, 9)))
-fg_mask = ndimage.binary_fill_holes(fg_mask)
-
-lbl, num = ndimage.label(fg_mask)
-if num > 0:
-    counts = np.bincount(lbl.flat)[1:]
-    largest = counts.argmax() + 1
-    fg_mask = (lbl == largest)
-
-fg_mask = ndimage.binary_fill_holes(fg_mask)
-np.save(os.path.join(DATA_DIR, "fg_mask.npy"), fg_mask)
 
 # 3. 1-Bit Floyd-Steinberg Serpentine Dithering
 def floyd_steinberg(img_array, mask=None, invert=False):
@@ -97,10 +100,7 @@ def floyd_steinberg(img_array, mask=None, invert=False):
     return output
 
 dark_dots = floyd_steinberg(gray_arr, mask=fg_mask, invert=False)
-light_dots = floyd_steinberg(gray_arr, mask=None, invert=True)
-
-np.save(os.path.join(DATA_DIR, "dark_dots.npy"), dark_dots)
-np.save(os.path.join(DATA_DIR, "light_dots.npy"), light_dots)
+light_dots = floyd_steinberg(gray_arr, mask=fg_mask, invert=True)
 
 dark_ys, dark_xs = np.where(dark_dots > 0)
 n_dark_dots = len(dark_xs)
