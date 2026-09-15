@@ -3929,37 +3929,37 @@
       </g>
     
           <g id="row-0" class="row-text mono">
-            <text x="483" y="143.0" fill="#DB2777" font-weight="600" textLength="54" lengthAdjust="spacingAndGlyphs">Subject</text>
+            <text x="483" y="143.0" fill="#0891B2" font-weight="600" textLength="54" lengthAdjust="spacingAndGlyphs">Subject</text>
             <text x="547" y="143.0" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · · · · · · ·</text>
             <text x="1122" y="143.0" fill="#1E293B" text-anchor="end" font-weight="500" textLength="132" lengthAdjust="spacingAndGlyphs">Sangam Chaurasiya</text>
           </g>
         
           <g id="row-1" class="row-text mono">
-            <text x="483" y="168.5" fill="#DB2777" font-weight="600" textLength="31" lengthAdjust="spacingAndGlyphs">Role</text>
-            <text x="524" y="168.5" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · · ·</text>
-            <text x="1122" y="168.5" fill="#1E293B" text-anchor="end" font-weight="500" textLength="241" lengthAdjust="spacingAndGlyphs">Full-Stack &amp; Software Developer</text>
+            <text x="483" y="168.5" fill="#0891B2" font-weight="600" textLength="31" lengthAdjust="spacingAndGlyphs">Role</text>
+            <text x="524" y="168.5" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · · · · · · · · · · · ·</text>
+            <text x="1122" y="168.5" fill="#1E293B" text-anchor="end" font-weight="500" textLength="54" lengthAdjust="spacingAndGlyphs">Student</text>
           </g>
         
           <g id="row-2" class="row-text mono">
-            <text x="483" y="194.0" fill="#64748B" font-weight="600" textLength="46" lengthAdjust="spacingAndGlyphs">Origin</text>
+            <text x="483" y="194.0" fill="#0891B2" font-weight="600" textLength="46" lengthAdjust="spacingAndGlyphs">Origin</text>
             <text x="539" y="194.0" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · · · · · · · · · · · ·</text>
             <text x="1122" y="194.0" fill="#1E293B" text-anchor="end" font-weight="500" textLength="39" lengthAdjust="spacingAndGlyphs">India</text>
           </g>
         
           <g id="row-3" class="row-text mono">
-            <text x="483" y="219.5" fill="#64748B" font-weight="600" textLength="70" lengthAdjust="spacingAndGlyphs">Education</text>
+            <text x="483" y="219.5" fill="#0891B2" font-weight="600" textLength="70" lengthAdjust="spacingAndGlyphs">Education</text>
             <text x="563" y="219.5" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · · · · · · · · · · ·</text>
             <text x="1122" y="219.5" fill="#1E293B" text-anchor="end" font-weight="500" textLength="46" lengthAdjust="spacingAndGlyphs">B.Tech</text>
           </g>
         
           <g id="row-4" class="row-text mono">
-            <text x="483" y="245.0" fill="#10B981" font-weight="600" textLength="46" lengthAdjust="spacingAndGlyphs">Status</text>
+            <text x="483" y="245.0" fill="#0891B2" font-weight="600" textLength="46" lengthAdjust="spacingAndGlyphs">Status</text>
             <text x="539" y="245.0" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · ·</text>
             <text x="1122" y="245.0" fill="#10B981" text-anchor="end" font-weight="500" textLength="234" lengthAdjust="spacingAndGlyphs">Building + Learning + Shipping</text>
           </g>
         
           <g id="row-5" class="row-text mono">
-            <text x="483" y="270.5" fill="#64748B" font-weight="600" textLength="70" lengthAdjust="spacingAndGlyphs">ToolChain</text>
+            <text x="483" y="270.5" fill="#0891B2" font-weight="600" textLength="70" lengthAdjust="spacingAndGlyphs">ToolChain</text>
             <text x="563" y="270.5" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · ·</text>
             <text x="1122" y="270.5" fill="#1E293B" text-anchor="end" font-weight="500" textLength="296" lengthAdjust="spacingAndGlyphs">VS Code · Git · Android Studio · Figma</text>
           </g>
@@ -3995,31 +3995,31 @@
           </g>
         
           <g id="row-11" class="row-text mono">
-            <text x="483" y="423.5" fill="#0284C7" font-weight="600" textLength="70" lengthAdjust="spacingAndGlyphs">Grid.Mail</text>
+            <text x="483" y="423.5" fill="#0891B2" font-weight="600" textLength="70" lengthAdjust="spacingAndGlyphs">Grid.Mail</text>
             <text x="563" y="423.5" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · ·</text>
             <text x="1122" y="423.5" fill="#1E293B" text-anchor="end" font-weight="500" textLength="226" lengthAdjust="spacingAndGlyphs">chaurasiyarajesh931@gmail.com</text>
           </g>
         
           <g id="row-12" class="row-text mono">
-            <text x="483" y="449.0" fill="#0284C7" font-weight="600" textLength="109" lengthAdjust="spacingAndGlyphs">Grid.Portfolio</text>
+            <text x="483" y="449.0" fill="#0891B2" font-weight="600" textLength="109" lengthAdjust="spacingAndGlyphs">Grid.Portfolio</text>
             <text x="602" y="449.0" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · · · · · · ·</text>
             <text x="1122" y="449.0" fill="#1E293B" text-anchor="end" font-weight="500" textLength="85" lengthAdjust="spacingAndGlyphs">coming soon</text>
           </g>
         
           <g id="row-13" class="row-text mono">
-            <text x="483" y="474.5" fill="#0284C7" font-weight="600" textLength="101" lengthAdjust="spacingAndGlyphs">Grid.LinkedIn</text>
+            <text x="483" y="474.5" fill="#0891B2" font-weight="600" textLength="101" lengthAdjust="spacingAndGlyphs">Grid.LinkedIn</text>
             <text x="594" y="474.5" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · · · ·</text>
             <text x="1122" y="474.5" fill="#1E293B" text-anchor="end" font-weight="500" textLength="156" lengthAdjust="spacingAndGlyphs">in/sangam-chaurasiya</text>
           </g>
         
           <g id="row-14" class="row-text mono">
-            <text x="483" y="500.0" fill="#0284C7" font-weight="600" textLength="85" lengthAdjust="spacingAndGlyphs">Grid.GitHub</text>
+            <text x="483" y="500.0" fill="#0891B2" font-weight="600" textLength="85" lengthAdjust="spacingAndGlyphs">Grid.GitHub</text>
             <text x="578" y="500.0" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · · · · ·</text>
             <text x="1122" y="500.0" fill="#1E293B" text-anchor="end" font-weight="500" textLength="140" lengthAdjust="spacingAndGlyphs">sangamchaurasiya65</text>
           </g>
         
           <g id="row-15" class="row-text mono">
-            <text x="483" y="525.5" fill="#0284C7" font-weight="600" textLength="109" lengthAdjust="spacingAndGlyphs">Grid.Instagram</text>
+            <text x="483" y="525.5" fill="#0891B2" font-weight="600" textLength="109" lengthAdjust="spacingAndGlyphs">Grid.Instagram</text>
             <text x="602" y="525.5" fill="#CBD5E1" font-weight="400" letter-spacing="2"> · · · · · · · · · · · · · · · · ·</text>
             <text x="1122" y="525.5" fill="#1E293B" text-anchor="end" font-weight="500" textLength="163" lengthAdjust="spacingAndGlyphs">@sangamchaurasiya5614</text>
           </g>

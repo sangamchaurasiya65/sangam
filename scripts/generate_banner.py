@@ -226,7 +226,7 @@ INFO_H = 485
 
 ROWS_DATA = [
     ("Subject", "Sangam Chaurasiya"),
-    ("Role", "Full-Stack & Software Developer"),
+    ("Role", "Student"),
     ("Origin", "India"),
     ("Education", "B.Tech"),
     ("Status", "Building + Learning + Shipping"),
@@ -420,21 +420,8 @@ def build_banner_svg(theme="dark"):
     
     for i, (label, val) in enumerate(ROWS_DATA):
         ry = row_start_y + i * row_spacing
-        if label.startswith("Core."):
-            lbl_color = chrome_color
-            disp_label = label
-        elif label.startswith("Grid."):
-            lbl_color = "#38BDF8" if is_dark else "#0284C7"
-            disp_label = label
-        elif label in ["Subject", "Role"]:
-            lbl_color = "#F472B6" if is_dark else "#DB2777"
-            disp_label = label
-        elif label == "Status":
-            lbl_color = accent_green
-            disp_label = label
-        else:
-            lbl_color = text_muted
-            disp_label = label
+        lbl_color = chrome_color
+        disp_label = label
             
         val_color = text_primary if is_dark else "#1E293B"
         if label == "Status":

@@ -25,7 +25,7 @@
 > sangam.details
 {
   "name": "Sangam Chaurasiya",
-  "role": "Full-Stack & Software Developer",
+  "role": "Student",
   "location": "India",
   "education": "B.Tech",
   "status": "Building + Learning + Shipping",
